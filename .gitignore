@@ -1,0 +1,4 @@
+# Project exclude paths
+/.gradle/
+/imagepicker/build/
+/imagepicker/build/intermediates/javac/debug/classes/
