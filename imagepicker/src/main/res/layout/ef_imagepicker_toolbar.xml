@@ -9,4 +9,15 @@
     android:elevation="@dimen/ef_toolbar_elevation"
     android:theme="@style/ef_CustomToolbarTheme"
     app:contentInsetStart="0dp"
-    tools:ignore="UnusedAttribute"/>
+    tools:ignore="UnusedAttribute">
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toolbar Title"
+        android:textSize="16dp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        />
+</androidx.appcompat.widget.Toolbar>
