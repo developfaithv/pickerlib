@@ -1,5 +1,6 @@
 package com.esafirm.imagepicker.features
 
+import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import androidx.annotation.StyleRes
 import com.esafirm.imagepicker.features.common.BaseConfig
@@ -15,7 +16,9 @@ class ImagePickerConfig(
     var folderTitle: String? = null,
     var imageTitle: String? = null,
     var doneButtonText: String? = null,
+    var doneDrawable: Int = 0,
     var arrowColor: Int = NO_COLOR,
+    var arrowDrawable: Int = 0,
     var limit: Int = IpCons.MAX_LIMIT,
     @StyleRes var theme: Int = 0,
     var isFolderMode: Boolean = false,

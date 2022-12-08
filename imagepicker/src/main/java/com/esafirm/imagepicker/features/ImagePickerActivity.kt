@@ -3,15 +3,18 @@ package com.esafirm.imagepicker.features
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources.NotFoundException
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.esafirm.imagepicker.R
 import com.esafirm.imagepicker.features.cameraonly.CameraOnlyConfig
 import com.esafirm.imagepicker.helper.ConfigUtils
@@ -103,10 +106,19 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         if (!isCameraOnly) {
-            menu.findItem(R.id.menu_camera).isVisible = config?.isShowCamera ?: true
+            menu.findItem(R.id.menu_camera).isVisible = false//config?.isShowCamera ?: true
             menu.findItem(R.id.menu_done).apply {
-                title = ConfigUtils.getDoneButtonText(this@ImagePickerActivity, config!!)
-                isVisible = imagePickerFragment.isShowDoneButton
+                //title = ConfigUtils.getDoneButtonText(this@ImagePickerActivity, config!!)
+                //isVisible = imagePickerFragment.isShowDoneButton
+                try {
+                    ContextCompat.getDrawable(applicationContext, config?.doneDrawable?:0)?.let {
+                        icon = it
+                        isVisible = true
+                    }
+                } catch (e: NotFoundException) {
+                    isVisible = false
+                    e.printStackTrace()
+                }
             }
         }
         return super.onPrepareOptionsMenu(menu)
@@ -122,7 +134,9 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
             return true
         }
         if (id == R.id.menu_done) {
-            imagePickerFragment.onDone()
+            onBackPressed()
+            //이따 사진전송할때 참고하자
+            //imagePickerFragment.onDone()
             return true
         }
         if (id == R.id.menu_camera) {
@@ -147,14 +161,17 @@ class ImagePickerActivity : AppCompatActivity(), ImagePickerInteractionListener 
         setSupportActionBar(toolbar)
         actionBar = supportActionBar
         actionBar?.run {
+            val toolbarTitle = findViewById<TextView>(R.id.toolbar_title)
+            toolbarTitle?.text = config.imageTitle
+           /* 디자인상 백버튼이 존재 하지 않아 셋팅하지 않는다.
             val arrowDrawable = ViewUtils.getArrowIcon(this@ImagePickerActivity)
             val arrowColor = config.arrowColor
             if (arrowColor != ImagePickerConfig.NO_COLOR && arrowDrawable != null) {
                 arrowDrawable.setColorFilter(arrowColor, PorterDuff.Mode.SRC_ATOP)
             }
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(arrowDrawable)
-            setDisplayShowTitleEnabled(true)
+            setHomeAsUpIndicator(arrowDrawable)*/
+            setDisplayHomeAsUpEnabled(false)
+            setDisplayShowTitleEnabled(false)
         }
     }
 
